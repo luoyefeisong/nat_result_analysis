@@ -37,10 +37,10 @@ def ip_query():
     flag = 1
     while flag:
         flag = 0
-        cursor.execute("select ip from txt_data_1_7")
+        cursor.execute("select ip from txt_data_1_11")
         all_ip_address = cursor.fetchall()
         for ip in all_ip_address:
-            cursor.execute("select city from txt_data_1_7 where ip = %s", ip)
+            cursor.execute("select city from txt_data_1_11 where ip = %s", ip)
             city = cursor.fetchone()
             if city[0] != '':
                 continue
@@ -55,11 +55,12 @@ def ip_query():
 
             url_content = url_object.read()
             res = json.loads(url_content)
-            cursor.execute("update txt_data_1_7 set region = %s, city = %s, isp = %s, isp_id = %s where ip = %s",
+            cursor.execute("update txt_data_1_11 set region = %s, city = %s, isp = %s, isp_id = %s where ip = %s",
                            (
                             dict_get(res, 'region'), dict_get(res, 'city'), dict_get(res, 'isp'),
                             dict_get(res, 'isp_id'), dict_get(res, 'ip')))
         conn.commit()
+        print("commit")
     cursor.close()
     conn.close()
 
